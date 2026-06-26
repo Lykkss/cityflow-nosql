@@ -75,11 +75,49 @@ services:
     networks:
       - cityflow-net
 
+  cassandra:
+    image: cassandra:4.1
+    container_name: cityflow-cassandra
+    restart: unless-stopped
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    environment:
+      CASSANDRA_CLUSTER_NAME: CityFlowCluster
+      CASSANDRA_DC: dc1
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+      HEAP_NEWSIZE: 128M
+      MAX_HEAP_SIZE: 512M
+    networks:
+      - cityflow-net
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  cassandra-web:
+    image: ipushc/cassandra-web
+    container_name: cityflow-cassandra-web
+    restart: unless-stopped
+    ports:
+      - "9091:8083"
+    environment:
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    networks:
+      - cityflow-net
+
 volumes:
   mongo_data:
   redis_data:
   neo4j_data:
   neo4j_logs:
+  cassandra_data:
 
 networks:
   cityflow-net:
