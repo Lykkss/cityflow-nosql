@@ -3,13 +3,6 @@
 > Plateforme de mobilité urbaine multimodale pour la métropole de Lyon.  
 > Projet fil rouge — Module NoSQL B3 INFO — Ynov Campus Lyon 2025/2026
 
----
-
-## Équipe
-
-| Nom | Rôle |
-|-----|------|
-| Lisa Quaglieri | Cloud Security Engineer — Architecture & implémentation |
 
 ---
 
